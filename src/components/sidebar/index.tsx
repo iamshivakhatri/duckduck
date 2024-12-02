@@ -10,8 +10,10 @@ import { WorkspaceProps } from '@/types/index.type'
 import Modal from '@/components/global/modal'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
-import { PlusCircle, PlusIcon } from 'lucide-react'
+import { Link, PlusCircle, PlusIcon } from 'lucide-react'
 import Search from '../global/search'
+import { MENU_ITEMS } from '@/constant'
+import SidebarItem from './sidebar-items'
 
 type Props = {
     activeWorkspaceId: string
@@ -23,6 +25,8 @@ const Sidebar = ({activeWorkspaceId}: Props) => {
         router.push(`/dashboard/${value}`)
     }
     const {data, isFetched} = useQueryData(["user-workspaces"], getWorkspaces)
+
+    const menuItems = MENU_ITEMS(activeWorkspaceId);
 
     const {data: workspace} = data as WorkspaceProps
     console.log("This is called the workspace", workspace)
@@ -67,6 +71,24 @@ const Sidebar = ({activeWorkspaceId}: Props) => {
             }>
                 <Search worksspaceId={activeWorkspaceId} />
         </Modal>
+        <p className='w-full text-[#9D9D9D] font-bold mt-4'>
+            Menu
+        </p>
+        <nav className='w-full'>
+            <ul className='flex flex-col gap-y-2'>
+               {menuItems.map((item)=>(
+                <SidebarItem 
+                  key={item.title} 
+                  href={item.href} 
+                  icon={item.icon} 
+                  title={item.title}
+                  selected={false} // Add required selected prop
+                />
+               ))}
+            </ul>
+
+        </nav>
+ 
     
     </div>
   )
