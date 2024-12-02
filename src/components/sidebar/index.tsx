@@ -2,11 +2,10 @@
 import React from 'react'
 import Image from 'next/image'
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem, SelectGroup, SelectLabel } from '@/components/ui/select'
-import { useRouter } from 'next/navigation'
-import { Separator } from '@radix-ui/react-context-menu'
+import { usePathname, useRouter } from 'next/navigation'
 import { useQueryData } from '@/hooks/useQueryData'
-import { getWorkspaces } from '@/actions/workspace'
-import { WorkspaceProps } from '@/types/index.type'
+import { getNotifications, getWorkspaces } from '@/actions/workspace'
+import { NotificationProps, WorkspaceProps } from '@/types/index.type'
 import Modal from '@/components/global/modal'
 import { Button } from '../ui/button'
 import { Input } from '../ui/input'
@@ -14,6 +13,7 @@ import { Link, PlusCircle, PlusIcon } from 'lucide-react'
 import Search from '../global/search'
 import { MENU_ITEMS } from '@/constant'
 import SidebarItem from './sidebar-items'
+import { Separator } from '../ui/separator'
 
 type Props = {
     activeWorkspaceId: string
@@ -21,14 +21,21 @@ type Props = {
 
 const Sidebar = ({activeWorkspaceId}: Props) => {
     const router = useRouter()
+    const pathName = usePathname();
     const onChangeActiveWorkspace = (value: string) => {
         router.push(`/dashboard/${value}`)
     }
     const {data, isFetched} = useQueryData(["user-workspaces"], getWorkspaces)
 
+    
+    
     const menuItems = MENU_ITEMS(activeWorkspaceId);
-
+     
     const {data: workspace} = data as WorkspaceProps
+
+    const {data:notifications} = useQueryData(["user-notifications"], getNotifications)
+    const {data:count} = notifications as NotificationProps
+
     console.log("This is called the workspace", workspace)
 
   return (
@@ -82,12 +89,18 @@ const Sidebar = ({activeWorkspaceId}: Props) => {
                   href={item.href} 
                   icon={item.icon} 
                   title={item.title}
-                  selected={false} // Add required selected prop
+                  selected={pathName === item.href} // Add required selected prop
+                  notification={(item.title === "Notifications" && count._count && count._count.notification) || 0}
                 />
                ))}
             </ul>
 
         </nav>
+        <Separator className="w-4/5" />
+
+        <p className='w-full text-[#9D9D9D] font-bold mt-4'>
+            Workspaces
+        </p>
  
     
     </div>
