@@ -35,15 +35,13 @@ const Search = ({worksspaceId}: Props) => {
        ):
        (
         <div>
-          {onUsers.map((user)=>{
+          {onUsers.map((user)=> (
             <div key={user.id}
              className='flex gap-x-3 items-center border-2 w-full p-3 rounded-xl '
             >
-
             </div>
-          })}
+          ))}
         </div>
-
        )}
     </div>
   )
