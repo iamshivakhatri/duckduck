@@ -223,3 +223,56 @@ export const getNotifications = async () => {
     }
 }
 
+export const createWorkSpace = async (name: string) => {
+    try{
+        const user = await currentUser()
+        if(!user) return {
+            status: 404,
+            data: []
+        }
+        const authorized = await prismadb.user.findUnique({
+            where:{
+                clerkid: user.id
+            },
+            select:{
+                subscription: {
+                    select:{
+                        plan: true,
+                    }
+                }
+            }
+        })
+
+        if (authorized && authorized.subscription?.plan === "PRO") {
+            const workspace = await prismadb.user.update({
+                where:{
+                    clerkid: user.id
+                },
+                data:{
+                    workspace: {
+                        create: {
+                            name,
+                            type: "PUBLIC",
+                        }
+                    }
+                }
+            })
+            if (workspace) return {
+                status: 201,
+                data: workspace
+            }
+
+        }
+        return {
+            status: 401,
+            data: "You are not authorized to create a workspace"
+        }
+
+    }catch(error){
+        return {
+            status: 400,
+            data: []
+        }
+    }
+}
+

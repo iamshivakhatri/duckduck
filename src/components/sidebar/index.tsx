@@ -102,7 +102,7 @@ const Sidebar = ({activeWorkspaceId}: Props) => {
                   icon={item.icon} 
                   title={item.title}
                   selected={pathName === item.href} // Add required selected prop
-                  notification={(item.title === "Notifications" && count._count && count._count.notification) || 0}
+                  notifications={(item.title === "Notifications" && count._count && count._count.notification) || 0}
                 />
                ))}
             </ul>
@@ -135,7 +135,7 @@ const Sidebar = ({activeWorkspaceId}: Props) => {
                     {item.name.charAt(0).toUpperCase()}
                   </WorkspacePlaceholder>}
                   title={item.name}
-                  notification={0}
+                  notifications={0}
                 />
                 )
 
@@ -150,7 +150,7 @@ const Sidebar = ({activeWorkspaceId}: Props) => {
                     {item.WorkSpace.name.charAt(0).toUpperCase()}
                   </WorkspacePlaceholder>}
                   title={item.WorkSpace.name}
-                  notification={0}
+                  notifications={0}
                 />
                ))}
               
