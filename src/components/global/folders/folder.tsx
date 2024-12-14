@@ -44,6 +44,10 @@ const Folder = ({ name, id, optimistic, count }: Props) => {
     console.log('double click')
   }
 
+  const updateFolderName = (e: React.MouseEvent<HTMLDivElement>) => {
+    renameFolder({name})
+  }
+
   //TODO: Add loading state
 
   return (
