@@ -1,3 +1,4 @@
+'use client'
 import {  PlusIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { FolderIcon } from 'lucide-react'
@@ -6,13 +7,46 @@ import FolderDuotone from '@/components/icons/folder-duotone'
 import { ArrowRightIcon } from 'lucide-react'
 import Folder from './folder'
 import { cn } from '@/lib/utils'
+import { useQueryData } from '@/hooks/useQueryData'
+import { getWorkspaceFolders } from '@/actions/workspace'
+import { useMutationDataState } from '@/hooks/useMutationData'
 type Props = {
     workspaceId: string
 }
 
+export type FolderProps = {
+    status: number,
+    data: ({
+        _count:{
+            videos: number
+        }
+    } & {
+        id: string,
+        name: string,
+        createdAt: Date,
+        workSpaceId: string | null
+    })[] 
+}
+
 const Folders = ({workspaceId}: Props) => {
+    const {data, isFetched} = useQueryData(['workspace-folders'], 
+        () => getWorkspaceFolders(workspaceId), 
+    )
+
+    const {latestVariables} = useMutationDataState(['create-folder'])
+    console.log("latestVariables", latestVariables)
+
+    const {status, data: folders} = data as FolderProps
+    
+
+
+    if(isFetched && folders){
+
+    }
+    
   return (
     // Get folders
+    
     <div className='flex flex-col gap-4 '>
         <div className='flex items-center justify-between'>
             <div className='flex items-center gap-4'>
@@ -27,8 +61,38 @@ const Folders = ({workspaceId}: Props) => {
             </div>
         </div>
 
-        <section className={cn('flex items-center gap-4 overflow-x-auto w-full')}>
-            <Folder name="Folder 1" id="1" optimistic={false} />
+        <section className={cn(status !== 200 && 'justify-center', 'flex items-center gap-4 overflow-x-auto w-full')}>
+            {/* <Folder name="Folder 1" id="1" optimistic={false} /> */}
+            {status !== 200 ?(
+                <p className='text-neutral-300'>No Folders in workspace</p>
+            ):<>
+                {latestVariables && latestVariables.status === 'pending' && (
+             
+                    <>
+                    <Folder 
+                    name = {latestVariables.variables.name}
+                    id={latestVariables.variables.id}
+                    optimistic
+                    />
+        
+                    </>
+
+           
+                   
+                )}
+                {folders.map((folder) =>(
+                    <>
+                    <Folder
+                        name = {folder.name}
+                        count = {folder._count.videos}
+                        id = {folder.id}
+                        key={folder.id}
+                        />
+             
+                    </>
+                ))}
+            </>
+            }
         </section>
     </div>
   )

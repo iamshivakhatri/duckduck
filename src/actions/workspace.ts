@@ -279,6 +279,7 @@ export const createWorkSpace = async (name: string) => {
 
 export const renameFolders = async (folderId: string, name: string) => {
     try{
+        console.log("folderId", folderId, "name", name)
         const folder = await prismadb.folder.update({
             where:{id: folderId},
             data:{name}
@@ -299,3 +300,33 @@ export const renameFolders = async (folderId: string, name: string) => {
     }
 }
 
+export const createFolder = async(workspaceId:string) =>{
+    try{
+        const isNewFolder = await prismadb.workSpace.update({
+            where:{
+                id: workspaceId
+            },
+            data:{
+                folders:{
+                    create:{
+                        name:"Untitled"
+                    }
+                }
+            }
+        })
+        if(isNewFolder) return {
+            status: 200,
+            data: isNewFolder
+        }
+        return {
+            status: 400,
+            data: "Folder not created"
+        }
+    }catch(error){
+        return {
+            status: 500,
+            data: "Something went wrong"
+        }
+
+    }
+}
