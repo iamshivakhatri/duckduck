@@ -330,3 +330,35 @@ export const createFolder = async(workspaceId:string) =>{
 
     }
 }
+
+export const getFolderInfo = async (folderId: string) => {
+    try{
+        const folder = await prismadb.folder.findUnique({
+            where:{
+                id: folderId
+            },
+            select:{
+                name: true,
+                _count:{
+                    select:{
+                        videos: true
+                    }
+                }
+
+            }
+        })
+        if(folder) return {
+            status: 200,
+            data: folder
+        }
+        return {
+            status: 404,
+            data: "Folder not found"
+        }
+    }catch(error){
+        return {
+            status: 500,
+            data: "Something went wrong"
+        }
+    }
+}

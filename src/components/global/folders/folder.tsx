@@ -8,6 +8,7 @@ import Loader from "../loader";
 import { useMutationData } from "@/hooks/useMutationData";
 import { renameFolders } from "@/actions/workspace";
 import { Input } from "@/components/ui/input";
+import { useMutationDataState } from "@/hooks/useMutationData";
 
 type Props = {
   name: string;
@@ -33,6 +34,9 @@ const Folder = ({ name, id, optimistic, count }: Props) => {
     'workspace-folders',
     renamed
   )
+
+
+  const {latestVariables} = useMutationDataState(['rename-folders'])
 
   
 
@@ -68,7 +72,7 @@ const Folder = ({ name, id, optimistic, count }: Props) => {
     )}
   >
       <FolderDuotone />
-      <Loader state={isPending}>
+      <Loader state={false}>
         <div className="flex flex-col gap-[1px]">
             {onRename? 
             <Input 
@@ -84,7 +88,9 @@ const Folder = ({ name, id, optimistic, count }: Props) => {
             onClick={(e) => e.stopPropagation()}
             onDoubleClick={(e) => handleNameDoubleClick(e)}
              className="text-neutral-300 ">
-                {name}
+                {latestVariables && latestVariables.variables.id === id && latestVariables.status === 'pending' ? (
+                    latestVariables.variables.name
+                  ): name}
             </p>
             </>
             }
