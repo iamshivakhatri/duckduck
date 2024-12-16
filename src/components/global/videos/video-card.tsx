@@ -1,6 +1,7 @@
 import React from 'react'
 import Loader from '../loader'
 import CardMenu from './video-card-menu'
+import ChangeVideoLocation from '@/components/forms/change-video-location'
 
 type Props = {
     User: {
@@ -34,6 +35,12 @@ const VideoCard = (props: Props) => {
              currentFolder={props.Folder?.id} 
              currentFolderName={props.Folder?.name}/>
         </div>
+        <ChangeVideoLocation
+            videoId={props.id}
+            currentFolder={props.Folder?.id}
+            currentWorkSpace={props.workspaceId}
+            currentFolderName={props.Folder?.name}
+        />
 
     </div>
 

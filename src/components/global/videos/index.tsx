@@ -54,7 +54,7 @@ const Videos = ({folderId, videosKey, workspaceId}: Props) => {
             'grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5' )}>
 
                 {videosStatus === 200 ? 
-                videos.map((video) => <VideoCard />)
+                videos.map((video) => <VideoCard workspaceId={workspaceId} {...videoMockData} />)
                 : <p className='text-[#BDBDBD] text-center'>No videos found</p>
                 }
 
