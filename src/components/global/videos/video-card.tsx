@@ -27,7 +27,6 @@ type Props = {
   
 
 const VideoCard = (props: Props) => {
-    console.log("props", props)
     //TODO: ADD date later
     const daysAgo = Math.floor(
         (new Date().getTime() - props.createdAt.getTime()) / (1000 * 60 * 60 * 24)

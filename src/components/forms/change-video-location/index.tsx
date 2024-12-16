@@ -1,7 +1,10 @@
 import { Label } from "@/components/ui/label"
-import { SeparatorHorizontal } from "lucide-react"
+import {  SeparatorHorizontal } from "lucide-react"
 import React from 'react'
 import { useMoveVideos } from '@/hooks/useFolder'
+import { Skeleton } from "@/components/ui/skeleton"
+import { Button } from "@/components/ui/button"
+import Loader from "@/components/global/loader"
 
 type Props = {
     videoId: string
@@ -10,12 +13,17 @@ type Props = {
     currentFolderName?: string
 }
 
+
 const ChangeVideoLocation = ({
     videoId,
     currentFolder,
     currentWorkSpace,
     currentFolderName
 }: Props) => {
+
+    console.log('currentFolder', currentFolder) 
+
+
     const {
         folders,
         workspaces,
@@ -26,18 +34,27 @@ const ChangeVideoLocation = ({
         errors,
         isPending
     
-    } = useMoveVideos(videoId, currentWorkSpace!)
+    } = useMoveVideos(videoId, currentWorkSpace!, currentFolder!)
+
+    
+
+    console.log('isFolders', isFolders)
     
     const folder = folders.find((f)=> f.id === currentFolder)
     const workspace = workspaces.find((f)=> f.id === currentWorkSpace)
   return (
-    <form className='flex flex-col gap-y-5'>
+    <form className='flex flex-col gap-y-5' onSubmit={onFormSubmit}>
         <div className='border-[1px] rounded-xl p-5'>
-            <h2 className='text-xs mb-5 text-[#a4a4a4]'>Current</h2>
+            <h2 className='text-xs text-[#a4a4a4]'>Current Workspace</h2>
             { workspace && (
-                <p className='text-[#a4a4a4]'> Workspace</p>
+                <p className='text-[#a4a4a4]'> {workspace.name}</p>
             )}
-            <p className='text-[#a4a4a4] text-sm'> Random Folder</p>
+            <h2 className='text-xs mt-2 text-[#a4a4a4]'>Current Folder</h2>
+            { folder ? (
+                <p className='text-[#a4a4a4]'> {folder.name}</p>
+            ):
+            <p className='text-[#a4a4a4]' >This video has no folder.</p>
+            }
         </div>
         <SeparatorHorizontal/>
         <div className="flex flex-col gap-y-5 p-5 border-[1px] rounded-xl">
@@ -46,14 +63,68 @@ const ChangeVideoLocation = ({
             </h2>
             <Label className="flex-col gap-y-2 flex" > 
                 <p className="text-xs"> Workspace </p>
-                <select className="rounded-xl text-base bg-transparent">
-                    <option
-                    className="text-[#a4a4a4]"
-                    value={'random-folder'}>Random Folder</option>
-
+                <select className="rounded-xl text-base bg-transparent" {...register('workspace_id')}>
+                    {workspaces.map(
+                        (space)=>(
+                            <option
+                             key={space.id} 
+                             className="text-[#a4a4a4]"
+                             value={space.id}>
+                                {space.name}
+                            </option>
+                        )
+                    )}
                 </select>
             </Label>
+            {isFetching? 
+            <Skeleton className="w-full h-[40px] "/>
+            :
+             <Label className="flex flex-col gap-y-2">
+                    <p className="text-xs"> Folders in this workspace </p>
+                    {isFolders && isFolders.length > 0? (
+                            <select
+                            {...register('folder_id')}
+                            className="rounded-xl bg-transparent text-base"
+                          >
+                            {isFolders.map((folder, key) =>
+                              key === 0 ? (
+                                <option
+                                  className="text-[#a4a4a4]"
+                                  key={folder.id}
+                                  value={folder.id}
+                                >
+                                  {folder.name}
+                                </option>
+                              ) : (
+                                <option
+                                  className="text-[#a4a4a4]"
+                                  key={folder.id}
+                                  value={folder.id}
+                                >
+                                  {folder.name}
+                                </option>
+                              )
+                            )}
+                          </select>
+                    ):(
+                        <p className="text-[#a4a4a4] text-sm">
+                            This workspace has no folders
+                        </p>
+                    )}
+                    
+             </Label>
+             }
         </div>
+        <Button>
+            <Loader  
+            state={isPending}
+            color="#000"
+            
+            >
+                Transfer
+
+            </Loader>
+        </Button>
     </form>
   )
 }

@@ -24,6 +24,8 @@ import {
     SheetTrigger 
   } from "@/components/ui/sheet"
 import InfoBar from '../global/info-bar'
+import { useDispatch } from 'react-redux'
+import { WORKSPACES } from '@/redux/slices/workspaces'
 
 type Props = {
     activeWorkspaceId: string
@@ -37,6 +39,7 @@ const Sidebar = ({activeWorkspaceId}: Props) => {
         router.push(`/dashboard/${value}`)
     }
     const {data, isFetched} = useQueryData(["user-workspaces"], getWorkspaces)
+    const dispatch = useDispatch()
 
     
     
@@ -47,8 +50,9 @@ const Sidebar = ({activeWorkspaceId}: Props) => {
     const {data:notifications} = useQueryData(["user-notifications"], getNotifications)
     const {data:count} = notifications as NotificationProps
 
-    console.log("This is called the workspace", workspace)
-
+    if (isFetched && workspace){
+        dispatch(WORKSPACES({workspaces: workspace.workspace}))
+    }
   const sidebarSection = (
     <div className='bg-[#111111] flex-none relative p-4 h-full w-[250px] flex flex-col gap-4 items-center overflow-hidden'>
         <div className='bg-[#111111] p-4 flex gap-2 justify-center items-center mb-4 absolute top-0 left-0 right-0' >

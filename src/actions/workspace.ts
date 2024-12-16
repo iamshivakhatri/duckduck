@@ -365,12 +365,14 @@ export const getFolderInfo = async (folderId: string) => {
 
 export const moveVideoLocation = async (videoId: string, workSpaceId: string, folderId: string) => {
     try{
+        console.log("I am running on moveVideoLocation")
+        console.log("videoId", videoId, "workSpaceId", workSpaceId, "folderId", folderId);
         const location = await prismadb.video.update({
             where:{
                 id: videoId
             },
             data:{
-                folderId,
+                folderId: folderId || null,
                 workSpaceId
             }
         })
@@ -383,6 +385,8 @@ export const moveVideoLocation = async (videoId: string, workSpaceId: string, fo
             data: "Video not moved"
         }
     }catch(error){
+        console.log("error", error)
+
         return {
             status: 500,
             data: "Something went wrong"

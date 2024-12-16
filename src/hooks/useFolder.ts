@@ -6,7 +6,9 @@ import { getWorkspaceFolders, moveVideoLocation } from "@/actions/workspace"
 import useZodForm from "./useZodForm"
 import { moveVideoSchema } from "@/components/forms/change-video-location/schema"
 
-export const useMoveVideos = (videoId:string, currentWorkspace: string) =>{
+export const useMoveVideos = (videoId:string, currentWorkspace: string, currentFolderId: string) =>{
+
+  console.log("videoid", videoId, currentWorkspace)
   // get state redux
   const {folders} = useAppSelector(state => state.FolderReducer)
   const {workspaces} = useAppSelector(state => state.WorkSpaceReducer)
@@ -28,24 +30,24 @@ export const useMoveVideos = (videoId:string, currentWorkspace: string) =>{
   })[]
   | undefined
   >(undefined)
-
-
-
-
   // stat folders
 
   // use mutation data
 
   const {mutate, isPending} = useMutationData(
     ['change-video-location'],
-    (data:{folder_id: string, workspace_id: string}) => moveVideoLocation(videoId, data.folder_id, data.workspace_id),
+    (data:{folder_id: string, workspace_id: string}) => moveVideoLocation(videoId, data.workspace_id,  data.folder_id,),
 
 
   )
 
   
   // usezodform 
-  const {errors, onFormSubmit, watch, register}  = useZodForm(moveVideoSchema, mutate, {folder_id:null, workspace_id: currentWorkspace})
+  const {errors, onFormSubmit, watch, register}  = useZodForm(
+    moveVideoSchema,
+     mutate,
+    {folder_id: currentFolderId, workspace_id: currentWorkspace}
+    )
 
   // fetch folders with a useeffect
   const fetchFolders = async (workspace: string) => {
@@ -79,10 +81,5 @@ export const useMoveVideos = (videoId:string, currentWorkspace: string) =>{
         errors,
         isPending
     }
-
-
-
-
-
 
 }

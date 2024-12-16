@@ -10,6 +10,8 @@ import { cn } from '@/lib/utils'
 import { useQueryData } from '@/hooks/useQueryData'
 import { getWorkspaceFolders } from '@/actions/workspace'
 import { useMutationDataState } from '@/hooks/useMutationData'
+import { useDispatch } from 'react-redux'
+import { FOLDERS } from '@/redux/slices/folders'
 type Props = {
     workspaceId: string
 }
@@ -34,14 +36,14 @@ const Folders = ({workspaceId}: Props) => {
     )
 
     const {latestVariables} = useMutationDataState(['create-folder'])
-    console.log("latestVariables", latestVariables)
+    const dispatch = useDispatch()
 
     const {status, data: folders} = data as FolderProps
     
 
 
     if(isFetched && folders){
-
+        dispatch(FOLDERS({folders: folders}))
     }
     
   return (

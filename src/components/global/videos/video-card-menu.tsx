@@ -17,10 +17,7 @@ const CardMenu = ({
     currentFolder,
     currentFolderName
 }: Props) => {
-    console.log("currentFolder", currentFolder)
-    console.log("currentFolderName", currentFolderName)
-    console.log("currentWorkSpace", currentWorkSpace)
-    console.log("videoId", videoId)
+
 
 
   return (

@@ -15,22 +15,6 @@ type Props = {
     workspaceId: string
 }
 
-const videoMockData = {
-    User: {
-        firstname: "John",
-        lastname: "Doe",
-        image: "https://example.com/profile.jpg",
-    },
-    id: "video-123",
-    processing: false,
-    Folder: {
-        id: "folder-456",
-        name: "Travel Videos",
-    },
-    createdAt: new Date("2024-12-14T10:00:00Z"),
-    title: "Exploring the Alps",
-    source: "https://example.com/video.mp4",
-};
 
 
 const Videos = ({folderId, videosKey, workspaceId}: Props) => {
