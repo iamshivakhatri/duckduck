@@ -16,13 +16,27 @@ const ChangeVideoLocation = ({
     currentWorkSpace,
     currentFolderName
 }: Props) => {
-    // const {} = useMoveVideos()
-    //TODO: Add form to change video location
+    const {
+        folders,
+        workspaces,
+        isFetching,
+        isFolders,
+        onFormSubmit,
+        register,
+        errors,
+        isPending
+    
+    } = useMoveVideos(videoId, currentWorkSpace!)
+    
+    const folder = folders.find((f)=> f.id === currentFolder)
+    const workspace = workspaces.find((f)=> f.id === currentWorkSpace)
   return (
     <form className='flex flex-col gap-y-5'>
         <div className='border-[1px] rounded-xl p-5'>
             <h2 className='text-xs mb-5 text-[#a4a4a4]'>Current</h2>
-            <p className='text-[#a4a4a4]'> Workspace</p>
+            { workspace && (
+                <p className='text-[#a4a4a4]'> Workspace</p>
+            )}
             <p className='text-[#a4a4a4] text-sm'> Random Folder</p>
         </div>
         <SeparatorHorizontal/>

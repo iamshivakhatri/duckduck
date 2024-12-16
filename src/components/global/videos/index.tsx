@@ -40,6 +40,8 @@ const Videos = ({folderId, videosKey, workspaceId}: Props) => {
     )
 
     const {status:videosStatus, data:videos} = videoData as VideoProps
+
+    console.log("videos", videos)
   return (
     <div className='flex flex-col gap-4 mt-4'>
         <div className='flex items-venter justify-between'>
@@ -54,11 +56,13 @@ const Videos = ({folderId, videosKey, workspaceId}: Props) => {
             'grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5' )}>
 
                 {videosStatus === 200 ? 
-                videos.map((video) => <VideoCard workspaceId={workspaceId} {...videoMockData} />)
+                videos.map((video) =>(
+                     <VideoCard key={video.id} workspaceId={workspaceId} {...video} />
+                    
+                    ))
                 : <p className='text-[#BDBDBD] text-center'>No videos found</p>
                 }
 
-                <VideoCard workspaceId={workspaceId} {...videoMockData}/>
 
         </section>
     </div>
