@@ -58,7 +58,6 @@ const Folder = ({ name, id, optimistic, count }: Props) => {
     }
   }
 
-  //TODO: Add loading state
 
   return (
     <div
@@ -72,7 +71,7 @@ const Folder = ({ name, id, optimistic, count }: Props) => {
     )}
   >
       <FolderDuotone />
-      <Loader state={false}>
+      <Loader state={isPending}>
         <div className="flex flex-col gap-[1px]">
             {onRename? 
             <Input 

@@ -6,6 +6,11 @@ import { useRouter } from 'next/navigation';
 import CopyLink from '../copy-link';
 import RichLink from '../rich-link';
 import { truncateString } from '@/lib/utils';
+import { Download } from 'lucide-react';
+import TabMenu from '@/components/global/tabs/index'
+import AiTools from '@/components/global/ai-tools/index';
+import VideoTranscript from '@/components/global/video-transcript/index';
+import Activities from '@/components/global/activities/index';
 
 type Props = {
     videoId: string
@@ -108,7 +113,7 @@ const VideoPreview = ({videoId}: Props) => {
         </div>
       </div>
       <div className='lg;col-span-1 flex flex-col gap-y-16'>
-        <div className='flex jsutify-end gap-x-3'>
+        <div className='flex jsutify-end gap-x-3 items-center'>
             <CopyLink variant="outline" className='rounded-full bg-transparent px-10' videoId={videoId} />
             <RichLink
              description={truncateString(video.description as string, 150)}
@@ -116,8 +121,29 @@ const VideoPreview = ({videoId}: Props) => {
              source={video.source}
              title={video.title as string}
             />
-            
-        </div>           
+            <Download className='text-[#5d5b5b] hover:text-[#a7a7a7] cursor-pointer'/>
+        </div>  
+        <div>
+       
+          <TabMenu 
+            defaultValue='Ai Tools' 
+            triggers={['Ai Tools', 'Transcript', 'Activity']} 
+          >
+            <AiTools
+              videoId={videoId}
+              trial={video.User?.trial!}
+              plan={video.User?.subscription?.plan!}
+            />
+
+            <VideoTranscript transcript={video.summary!} />
+
+            <Activities
+              author={video.User?.firstname as string}
+              videoId={videoId}
+            />
+
+          </TabMenu>
+        </div>         
       </div>
     </div>
   )
