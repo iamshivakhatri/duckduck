@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const DarkMode = () => {
+export const LightMode = () => {
   return (
     <svg
       width="282"
@@ -11,11 +11,11 @@ export const DarkMode = () => {
     >
       <path
         d="M0 15C0 6.71573 6.71573 0 15 0H267C275.284 0 282 6.71573 282 15V178C282 186.284 275.284 193 267 193H15C6.71573 193 0 186.284 0 178V15Z"
-        fill="black"
+        fill="#F5F5F5"
       />
       <path
         d="M28 42C28 33.7157 34.7157 27 43 27H242C250.284 27 257 33.7157 257 42V193H28V42Z"
-        fill="#202020"
+        fill="white"
       />
       <circle
         cx="45.5"
@@ -73,13 +73,13 @@ export const DarkMode = () => {
         width="125"
         height="126"
         rx="4"
-        fill="#404040"
+        fill="#D9D9D9"
       />
       <rect
         x="137"
         width="145"
         height="193"
-        fill="black"
+        fill="#F5F5F5"
       />
       <circle
         cx="45.5"
@@ -105,7 +105,7 @@ export const DarkMode = () => {
         width="61"
         height="17"
         rx="3"
-        fill="#5B5B5B"
+        fill="#D9D9D9"
       />
       <rect
         x="44"
@@ -113,7 +113,7 @@ export const DarkMode = () => {
         width="61"
         height="17"
         rx="3"
-        fill="#5B5B5B"
+        fill="#D9D9D9"
       />
       <rect
         x="44"
@@ -121,7 +121,7 @@ export const DarkMode = () => {
         width="61"
         height="17"
         rx="3"
-        fill="#5B5B5B"
+        fill="#D9D9D9"
       />
       <rect
         x="44"
@@ -129,15 +129,15 @@ export const DarkMode = () => {
         width="61"
         height="17"
         rx="3"
-        fill="#5B5B5B"
+        fill="#D9D9D9"
       />
       <path
         d="M137 27H242C250.284 27 257 33.7157 257 42V193H137V27Z"
-        fill="#202020"
+        fill="white"
       />
       <path
         d="M137 67H238C241.314 67 244 69.6863 244 73V188C244 190.761 241.761 193 239 193H137V67Z"
-        fill="#404040"
+        fill="#D9D9D9"
       />
       <rect
         x="128"
@@ -145,14 +145,14 @@ export const DarkMode = () => {
         width="111"
         height="11"
         rx="3"
-        fill="#404040"
+        fill="#D9D9D9"
       />
       <rect
         x="137"
         y="123"
         width="102"
         height="11"
-        fill="#585858"
+        fill="#F8F8F8"
       />
       <rect
         x="194"
@@ -160,21 +160,21 @@ export const DarkMode = () => {
         width="45"
         height="6"
         rx="3"
-        fill="#585858"
+        fill="#F7F7F7"
       />
       <rect
         x="128"
         y="85"
         width="111"
         height="27"
-        fill="#5B5B5B"
+        fill="#F8F8F8"
       />
       <rect
         x="137"
         y="85"
         width="102"
         height="27"
-        fill="#5B5B5B"
+        fill="#F8F8F8"
       />
     </svg>
   )
