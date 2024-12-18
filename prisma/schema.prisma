@@ -32,6 +32,7 @@ model User {
   trial        Boolean        @default(false)
   firstView    Boolean        @default(false)
   comment      Comment[]
+
 }
 
 model Comment {
@@ -115,6 +116,9 @@ model Member {
   member      Boolean    @default(true)
   WorkSpace   WorkSpace? @relation(fields: [workSpaceId], references: [id])
   workSpaceId String?    @db.Uuid
+
+  @@unique([userId, workSpaceId])  // Composite unique constraint
+
 }
 
 model Notification {

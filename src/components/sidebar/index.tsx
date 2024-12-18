@@ -15,6 +15,8 @@ import SidebarItem from './sidebar-items'
 import { Separator } from '../ui/separator'
 import WorkspacePlaceholder from './workspace-placeholder'
 import GlobalCards from '../global/global-card'
+import PaymentButton from '../global/payment-button'
+
 // import { SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { 
     Sheet, 
@@ -91,7 +93,7 @@ const Sidebar = ({activeWorkspaceId}: Props) => {
                     Invite To Workspace
                 </span>
             }>
-                <Search worksspaceId={activeWorkspaceId} />
+                <Search workspaceId={activeWorkspaceId} />
         </Modal>
         <p className='w-full text-[#9D9D9D] font-bold mt-4'>
             Menu
@@ -165,16 +167,10 @@ const Sidebar = ({activeWorkspaceId}: Props) => {
          <>
          <GlobalCards title="Upgrade to Pro"
           description="Unlock AI features like transcription, AI summary, and more."
-          footer={<Button className='text-sm mt-2 w-full'>
-            <Loader>
-                Upgrade
-            </Loader>
-        </Button>}
-
+          footer={
+            <PaymentButton />}
           /> 
             
-
-
         </>}
  
     

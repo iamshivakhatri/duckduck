@@ -1,7 +1,7 @@
 'use client';
 import { useQueryData } from '@/hooks/useQueryData'
-import { getPreviewVideo } from '@/actions/workspace'
-import React from 'react'
+import { getPreviewVideo, sendEmailForFirstView } from '@/actions/workspace'
+import React, {useEffect} from 'react'
 import { useRouter } from 'next/navigation';
 import CopyLink from '../copy-link';
 import RichLink from '../rich-link';
@@ -51,6 +51,9 @@ const VideoPreview = ({videoId}: Props) => {
      ()=>getPreviewVideo(videoId)
     )
 
+    const notifyFirstView = async () => await sendEmailForFirstView(videoId)
+
+
     const {data: video, status, author} = data as VideoProps
 
     if (status !== 200 && status !== 201) { 
@@ -60,6 +63,16 @@ const VideoPreview = ({videoId}: Props) => {
     const daysAgo = Math.floor(
       (new Date().getTime() - video.createdAt.getTime()) / (1000 * 60 * 60 * 24)
     )
+
+
+    useEffect(() => {
+      if (video.views === 0) {
+        notifyFirstView()
+      }
+      return () => {
+        notifyFirstView()
+      }
+    }, [])
 
 
   return (

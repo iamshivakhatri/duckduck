@@ -303,6 +303,7 @@ export const searchUsers = async (query: string) => {
     recieverId: string,
     email: string
   ) => {
+    console.log("workspaceId", workspaceId, "recieverId", recieverId, "email", email);
     try {
       const user = await currentUser()
       if (!user) return { status: 404 }
@@ -401,4 +402,64 @@ export const searchUsers = async (query: string) => {
       html,
     }
     return { transporter, mailOptions }
+  }
+
+  export const acceptInvite = async (inviteId: string) => {
+    try {
+      const user = await currentUser()
+      if (!user)
+        return {
+          status: 404,
+        }
+      const invitation = await prismadb.invite.findUnique({
+        where: {
+          id: inviteId,
+        },
+        select: {
+          workSpaceId: true,
+          reciever: {
+            select: {
+              clerkid: true,
+            },
+          },
+        },
+      })
+  
+      if (user.id !== invitation?.reciever?.clerkid) return { status: 401 }
+      const acceptInvite = prismadb.invite.update({
+        where: {
+          id: inviteId,
+        },
+        data: {
+          accepted: true,
+        },
+      })
+  
+      const updateMember = prismadb.user.update({
+        where: {
+          clerkid: user.id,
+        },
+        data: {
+          members: {
+            create: {
+              workSpaceId: invitation.workSpaceId,
+            },
+          },
+        },
+      })
+  
+      const membersTransaction = await prismadb.$transaction([
+        acceptInvite,
+        updateMember,
+      ])
+
+      console.log("membersTransaction", membersTransaction);
+  
+      if (membersTransaction) {
+        return { status: 200 }
+      }
+      return { status: 400 }
+    } catch (error) {
+      return { status: 400 }
+    }
   }
