@@ -3,6 +3,9 @@
 import { currentUser } from "@clerk/nextjs/server";
 import prismadb from "@/lib/prismadb";
 import nodemailer from 'nodemailer'
+import Stripe from 'stripe'
+
+const stripe = new Stripe(process.env.STRIPE_CLIENT_SECRET as string)
 
 
 export const onAuthenticatedUser = async () => {
@@ -459,6 +462,38 @@ export const searchUsers = async (query: string) => {
         return { status: 200 }
       }
       return { status: 400 }
+    } catch (error) {
+      return { status: 400 }
+    }
+  }
+
+  export const completeSubscription = async (session_id: string) => {
+    try {
+      const user = await currentUser()
+      if (!user) return { status: 404 }
+  
+      const session = await stripe.checkout.sessions.retrieve(session_id)
+      if (session) {
+        const customer = await prismadb.user.update({
+          where: {
+            clerkid: user.id,
+          },
+          data: {
+            subscription: {
+              update: {
+                data: {
+                  customerId: session.customer as string,
+                  plan: 'PRO',
+                },
+              },
+            },
+          },
+        })
+        if (customer) {
+          return { status: 200 }
+        }
+      }
+      return { status: 404 }
     } catch (error) {
       return { status: 400 }
     }
